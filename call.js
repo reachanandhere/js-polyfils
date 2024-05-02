@@ -11,8 +11,8 @@ let name = {
   age: "24",
 };
 
-let printdetails = function () {
-  console.log(this.name + " " + this.age);
+let printdetails = function (location) {
+  console.log(this.name + " " + this.age + " " + location);
 };
 
-printdetails.myCall(name); // Sachin 24
+printdetails.myCall(name, "Mumbai"); // Sachin 24
