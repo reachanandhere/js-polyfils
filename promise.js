@@ -1,9 +1,9 @@
 function PromisePolyfill(executor) {
   let onResolve;
   let onReject;
-  let isFullfilled = false;
-  isRejected = false;
-  let isCalled = false;
+  let isFullfilled = false,
+    isRejected = false,
+    isCalled = false;
   let value;
 
   function resolve(val) {
@@ -44,9 +44,13 @@ function PromisePolyfill(executor) {
   try {
     executor(resolve, reject);
   } catch (err) {
-    reject(err)
+    reject(err);
   }
 }
+
+//In case of setTimeout, this will work asynchronously
+// So firstly, .then will be called
+// after .then, resolve will be called
 
 const examplePromise = new PromisePolyfill((resolve, reject) => {
   setTimeout(() => {
@@ -59,3 +63,16 @@ examplePromise
     console.log(value);
   })
   .catch((err) => console.log(err));
+
+
+PromisePolyfill.resolve=(val)=>{
+  return new PromisePolyfill(function executor(resolve, reject){
+    resolve(val)
+  })
+}
+
+PromisePolyfill.reject=(val)=>{
+  return new PromisePolyfill(function executor(resolve, reject){
+    reject(val)
+  })
+}
